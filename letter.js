@@ -7,5 +7,13 @@ function Letter (letter) {
 		}
 		return this.guessed;
 	}
+	this.underscoreMaker = function () {
+		if (this.guessed === true) {
+			return letter;
+		} else {
+			return "_";
+		}
+	}
+};
 
-}
+module.exports = Letter;
