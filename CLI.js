@@ -1,27 +1,24 @@
 var inquirer = require("inquirer");
 var word = require("./word.js");
 var letter = require("./letter.js");
-var randomWord = require('random-word');
-var guessCounter = 5;
-var hangmanWord;
+var gamestate = require("./gamestate.js");
+var game;
 
 function newGame () {
 
-var randomWord = randomWord();
-var hangmanWord = new word (randomWord);
-hangmanWord.addToArray();
+	game = new gamestate ();
 
 };
 
 var askForLetter = function() {
 
-	if (guessCounter > 5 | hangmanWord.completeWord() === false) {
+	if (game.guessCounter > 0 && game.hangmanWord.completeWord() === false) {
 
 		inquirer.prompt([
 		{
 			type: "input",
 			name: "ask",
-			message: "Guess a letter!",
+			message: "Guess a letter!\n",
 			validate: function (input) {
 				if (input.length > 1) {
 					return false;
@@ -29,16 +26,16 @@ var askForLetter = function() {
 					return true;
 				}
 			},
-			suffix: "\n" + hangmanWord.displayWord()
+			suffix: "\n" + game.hangmanWord.displayWord()
 		}
 		]).then(function(answer) {
 
 			var guessedLetter = answer.ask;
 			var anyMatch = false;
 
-			for (var i = 0; i < hangmanWord.lettersArray.length; i++) {
+			for (var i = 0; i < game.hangmanWord.lettersArray.length; i++) {
 
-				if (hangmanWord.lettersArray[i].isitCorrect(guessedLetter) === true) {
+				if (game.hangmanWord.lettersArray[i].isitCorrect(guessedLetter) === true) {
 
 					anyMatch = true;
 
@@ -51,8 +48,13 @@ var askForLetter = function() {
 
 			} else {
 
-				guessCounter--;
-				console.log("Incorrect! Only " + guessCounter + " guesses left!");
+				game.guessCounter--;
+
+				if (game.guessCounter > 0) {
+
+					console.log("Incorrect! Guesses left: " + game.guessCounter);
+
+				}
 
 				askForLetter();
 
@@ -60,33 +62,44 @@ var askForLetter = function() {
 
 		});
 
-		if (guessCounter === 0 | hangmanWord.completeWord === true) {
+	};
 
-			inquirer.prompt([
-			{
-				type: "confirm",
-				name: "playAgain",
-				message: "Want to play again?"
-			}
-				]).then(function(answer) {
+	if (game.guessCounter === 0 | game.hangmanWord.completeWord() === true) {
 
-				if (answer.playAgain === true) {
+		if (game.guessCounter === 0) {
 
-					newGame();
-					askForLetter();
+			console.log("You lost!");
 
-				} else {
+		} else {
 
-					console.log("Thanks for playing!");
-
-				}
-
-			});
+			console.log("You won!");
 
 		}
 
-	};
+		inquirer.prompt([
+		{
+			type: "confirm",
+			name: "playAgain",
+			message: "Want to play again?"
+		}
+		]).then(function(answer) {
+
+			if (answer.playAgain === true) {
+
+				newGame();
+				askForLetter();
+
+			} else {
+
+				console.log("Thanks for playing!");
+
+			}
+
+		});
+
+	}
 
 };
 
+newGame();
 askForLetter();
