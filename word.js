@@ -5,19 +5,19 @@ function Word (word) {
 	this.addToArray = function () {
 		for (var i = 0; i < word.length; i++) {
 			var newLetter = new letter(word[i]);
-			lettersArray.push(newLetter);
+			this.lettersArray.push(newLetter);
 		}
 	}
 	this.displayWord = function () {
 		var wordDisplay = "";
-		for (var i = 0; i < lettersArray.length; i++) {
-			wordDisplay += lettersArray[i].underscoreMaker();
+		for (var i = 0; i < this.lettersArray.length; i++) {
+			wordDisplay += this.lettersArray[i].underscoreMaker();
 		}
 		return wordDisplay;
 	}
 	this.completeWord = function () {
-		for (var i = 0; i < lettersArray.length; i++) {
-			if (lettersArray[i].guessed === false) {
+		for (var i = 0; i < this.lettersArray.length; i++) {
+			if (this.lettersArray[i].guessed === false) {
 				return false;
 			} 	
 		}
@@ -25,3 +25,4 @@ function Word (word) {
 	}
 };
 
+module.exports = Word;

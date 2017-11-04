@@ -1,17 +1,18 @@
 function Letter (letter) {
 	this.letter = letter;
 	this.guessed = false;
-	this.guessCheck = function (input) {
+	this.isitCorrect = function (input) {
 		if (letter === input) {
 			this.guessed = true;
+			return true;
 		}
-		return this.guessed;
+		return false;
 	}
 	this.underscoreMaker = function () {
 		if (this.guessed === true) {
-			return letter;
+			return " " + letter;
 		} else {
-			return "_";
+			return " _";
 		}
 	}
 };

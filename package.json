@@ -4,8 +4,8 @@
   "description": "Command-line Hangman game using Node.JS",
   "main": "CLI.js",
   "dependencies": {
-    "chance": "^1.0.12",
-    "inquirer": "^3.3.0"
+    "inquirer": "^3.3.0",
+    "random-word": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
