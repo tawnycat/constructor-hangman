@@ -15,5 +15,13 @@ function Word (word) {
 		}
 		return wordDisplay;
 	}
-}
+	this.completeWord = function () {
+		for (var i = 0; i < lettersArray.length; i++) {
+			if (lettersArray[i].guessed === false) {
+				return false;
+			} 	
+		}
+		return true;
+	}
+};
 
